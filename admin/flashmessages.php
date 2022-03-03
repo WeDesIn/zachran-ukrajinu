@@ -33,29 +33,34 @@ if( ! class_exists( 'FlashMessages' ) )
          * @author digihood
          * @return true/false
          */ 
-        static public function show_su_mess($type,$mess,$submess){
+        public static function show_su_mess($type,$mess,$submess){
             
             switch ($type) {
                 case 'success':
-                    echo '<div class="messageBox success">';
-                    echo '<p>'.$mess.'</p>';
-                    echo '<ul><li>'.$submess.'</li></ul>';
-                    echo '</div>';
+                   self::html_mess($type,$mess,$submess);
                     break;
                 case 'error':
-                    echo '<div class="messageBox error">';
-                    echo '<p>'.$mess.'</p>';
-                    echo '<ul><li>'.$submess.'</li></ul>';
-                    echo '</div>';
+                    self::html_mess($type,$mess,$submess);
                     break;
                 case 'fail':
-                    echo '<div class="messageBox fail">';
-                    echo '<p>'.$mess.'</p>';
-                    echo '<ul><li>'.$submess.'</li></ul>';
-                    echo '</div>';
+                    self::html_mess($type,$mess,$submess);
                     break;
             }
        
+        }
+
+
+        private static function html_mess($type,$mess,$submess){
+            echo '<div class="messageBox '.$type.'">';
+            echo '<p>'.$mess.'</p>';
+            if(is_array($submess)) {
+                foreach ($submess as $value) {
+                    echo '<ul><li>'.$value[0].'</li></ul>';
+                }
+            } else {
+                echo '<ul><li>'.$submess.'</li></ul>';
+            }
+            echo '</div>';
         }
             
     }

@@ -138,18 +138,7 @@ if( ! class_exists( 'su_session' ) )
                 
         }
 
-        /**
-         * přidat zprávu
-         *
-         * @param $message = obsah zprávy
-         * @param $errormsq = zda je to chybová hláška
-         * 
-         * @author digihood
-         * @return true/false
-         */ 
-        public function show_su_mess(){
-       
-        }
+      
             
     }
  }

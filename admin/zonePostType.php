@@ -17,7 +17,8 @@ if( ! class_exists( 'zonePostType' ) )
 			add_action( 'init', [$this,'create_type_tax'] );
             add_filter('use_block_editor_for_post_type', [$this,'prefix_disable_gutenberg'], 10, 2);
             add_action( 'add_meta_boxes', [$this,'add_your_fields_meta_box'] );
-          //  add_action( 'save_post', [$this,'save_your_fields_meta'] );
+            add_action( 'save_post', [$this,'save_your_fields_meta'] );
+            add_action('admin_menu', [$this,'add_tutorial_cpt_submenu_example']);
 		
           
             
@@ -41,7 +42,7 @@ if( ! class_exists( 'zonePostType' ) )
                     'singular_name' => __( 'lokaci', TM_PLUGSU ),
                     'menu_name' => __( 'Zachraň Ukrajinu', TM_PLUGSU ),
                 ),
-                'public' => false,
+                'public' => true,
                 'show_ui' => true,
                 'menu_icon' => 'dashicons-sos',
                 'menu_position' => 54,
@@ -61,13 +62,13 @@ if( ! class_exists( 'zonePostType' ) )
          */ 
         function create_type_tax() {
             register_taxonomy(
-				'save_ukraine_tax',
+				'save_ukraine_type',
 				'save_ukraine',
 				array(
-					'label' => __( 'Město', TM_PLUGSU ),
-					'rewrite' => array( 'slug' => 'save_ukraine-tax' ),
-					'hierarchical'               => false,
-					'public'                     => false,
+					'label' => __( 'Města', TM_PLUGSU ),
+					'rewrite' => array( 'slug' => 'save_ukraine-type' ),
+					'hierarchical'               => true,
+					'public'                     => true,
 					'show_ui'                    => true,
 					'show_admin_column'          => true,
 					'show_in_nav_menus'          => true,
@@ -75,15 +76,14 @@ if( ! class_exists( 'zonePostType' ) )
 					'show_in_rest' 				=> true,
 				)
 			);
-
             register_taxonomy(
-				'save_ukraine_type',
+				'save_ukraine_tax',
 				'save_ukraine',
 				array(
-					'label' => __( '??', TM_PLUGSU ),
-					'rewrite' => array( 'slug' => 'save_ukraine-type' ),
-					'hierarchical'               => true,
-					'public'                     => false,
+					'label' => __( 'Štítky', TM_PLUGSU ),
+					'rewrite' => array( 'slug' => 'save_ukraine-tax' ),
+					'hierarchical'               => false,
+					'public'                     => true,
 					'show_ui'                    => true,
 					'show_admin_column'          => true,
 					'show_in_nav_menus'          => true,
@@ -94,9 +94,21 @@ if( ! class_exists( 'zonePostType' ) )
 
         }
 
+        function add_tutorial_cpt_submenu_example(){
+
+            add_submenu_page(
+                            'edit.php?post_type=save_ukraine', //$parent_slug
+                            __('Nastavení',TM_PLUGSU),  //$page_title
+                            __('Nastavení',TM_PLUGSU),        //$menu_title
+                            'manage_options',           //$capability
+                            'Setting_save_ukraine',//$menu_slug
+                            [new SuSetting, 'settings_index']//$function
+            );
+       
+       }
         function add_your_fields_meta_box() {
             add_meta_box(
-                'your_fields_meta_box', // $id
+                'save_ukraine', // $id
                 'Pole', // $title
                 [$this,'show_your_fields_meta_box'], // $callback
                 'save_ukraine', // $screen
@@ -108,87 +120,23 @@ if( ! class_exists( 'zonePostType' ) )
       
         function show_your_fields_meta_box() {
             global $post;  
-                $meta = get_post_meta( $post->ID, 'your_fields', true ); 
-            
-                $this->HtmlForm->html_input_zoneposttype()
+                $this->HtmlForm->html_input_zoneposttype($post);
                 ?>
-           
-            
             <?php }
 
-        function save_your_fields_meta( $post_id ) {  
+public function save_your_fields_meta( $post_id ) {  
            
-            if ( 'post' === $_POST['post_type'] ) {
-                if ( !current_user_can( 'edit_page', $post_id ) ) {
-                    return $post_id;
-                } elseif ( !current_user_can( 'edit_post', $post_id ) ) {
-                    return $post_id;
-                }  
-            }
-            $data_of_post = self::process_data_for_save($_POST);
-            
-            
-            $save = $this->save_su_fields_meta_foreach($post_id,$data_of_post);
-           
-           //zde volat save
-            
-        }
-
-
-        static function save_su_fields_meta_foreach($post_id,$data_of_post){
-            
-            foreach ($data_of_post as $key => $value) {
-               $old[$key] = get_post_meta( $post_id,  $key, true );
-            }
-
-            foreach ($data_of_post as $key => $value) {
-                $new[$key] = $value;
-             }
-            
-            if ( $new && $old ) {
-                foreach ($new as $key => $value) {
-                  
-                
-                    if($old[$key] != $value){ 
-                        update_post_meta( $post_id, $key, $value );
-                    }elseif($new[$key] === '' && isset($old[$key]) && $old[$key]){
-                        foreach ($old as $key => $value) {
-                            delete_post_meta( $post_id, $key, $value );
-                        }
-                    }
-                }
-                return true;
-            } 
-            return null;
-        }
-        
-        static function process_data_for_save($data){
-            
-            $data_of_post = [
-                'su_name' => $data['su_name'],
-                'su_subname' => $data['su_subname'],
-                'su_mail' => $data['su_mail'],
-                'su_adress' => $data['su_adress'],
-                'su_phone' => $data['su_phone'],
-                'count_free_spot' => $data['count_free_spot'],
-                'su_city' => $data['su_city'],
-                'su_comment' => $data['su_comment'],
-                'su_status' => $data['su_status']
-            ];
-            return $data_of_post;
-        }
-
-        static function get_all_save_ukraine_terms(){
-            $terms = get_terms([
-                'taxonomy' => 'save_ukraine_tax',
-                'hide_empty' => false,
-            ]);
-            $term = [];
-            foreach ($terms as  $value) {
-                $term[$value->term_id] = $value->name;
-            }
-            return $term;
-        }
+    if ( isset($_POST['post_type']) && 'save_ukraine' === $_POST['post_type'] ) {
+        if ( !current_user_can( 'edit_page', $post_id ) ) {
+            return $post_id;
+        } elseif ( !current_user_can( 'edit_post', $post_id ) ) {
+            return $post_id;
+        }  
+        $data_of_post = SuProcessing::process_data_for_save($_POST);
+        $save = SuProcessing::save_su_fields_meta_foreach($post_id,$data_of_post);
+        if($save == null) return false;
+    }
+  }
            
     }
     new zonePostType;
