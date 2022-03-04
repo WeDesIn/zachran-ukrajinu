@@ -190,6 +190,20 @@ if( ! class_exists( 'SuProcessing' ) )
         return true;
       }
 
+      static public function send_admin_mail( ) {
+        $class_email = new SuSendEmail();
+     
+        $title = (get_option('su_title_mail') ?  get_option('su_title_mail')  : __('Nadpis', TM_PLUGSU));
+        $mail = (get_option('su_admin_mail') ? get_option('su_admin_mail')  : get_bloginfo('admin_email'));
+        $footer = (get_option('su_footer_mail') ? get_option('su_footer_mail'): '');
+        $content = (get_option('su_message_mail') ? get_option('su_message_mail'): ''); 
+        $message =  $class_email->email_content( $title,[$content], $footer);
+        $subject =   (get_option('su_subject_mail') ? get_option('su_subject_mail'): '');
+       $t =  $class_email->send_client_emails( $mail,$subject, $message );
+
+        return true;
+      }
+
      
 
     
