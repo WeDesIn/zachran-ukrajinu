@@ -24,16 +24,14 @@ if( ! class_exists( 'SuSetting' ) )
 
         public function settings_index(){
            
-            HtmlForm::setting_html();
+            HtmlForm::settings_page_html();
            
         }
 
         public function save_setting_su_feilds(){
-            
-            if(isset($_POST['save_su_settings_thanksyou']) && $_POST['save_su_settings_thanksyou'] == 1){
+            if(isset($_POST['save_su_settings_thanksyou']) && $_POST['save_su_settings_thanksyou'] == 'send') {
                 if(isset($_POST['su_thanksyou']) && $_POST['su_thanksyou']){
                     update_option('su_thanksyou',$_POST['su_thanksyou']); 
-                   
                 }
                 if(isset($_POST['su_thanksyou_page']) && $_POST['su_thanksyou_page']){
                     update_option('su_thanksyou_page',$_POST['su_thanksyou_page']); 
@@ -43,6 +41,8 @@ if( ! class_exists( 'SuSetting' ) )
                 }else {
                     delete_option('su_thanksyou_text');
                 }
+            }
+            if(isset($_POST['save_su_settings_thanksyou']) && $_POST['save_su_settings_thanksyou'] == 'text'){
                 if(isset($_POST['su_admin_mail']) && $_POST['su_admin_mail']){
                     update_option('su_admin_mail',$_POST['su_admin_mail']); 
                    

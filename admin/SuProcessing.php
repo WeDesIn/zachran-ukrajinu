@@ -73,10 +73,10 @@ if( ! class_exists( 'SuProcessing' ) )
         return $data_of_post;
     }
 
-      static function get_all_save_ukraine_terms(){
+      static function get_all_save_ukraine_terms($hide_empty=false){
           $terms = get_terms([
               'taxonomy' => 'save_ukraine_type',
-              'hide_empty' => false,
+              'hide_empty' => $hide_empty,
           ]);
           $term = [];
           foreach ($terms as  $value) {
@@ -202,6 +202,40 @@ if( ! class_exists( 'SuProcessing' ) )
        $t =  $class_email->send_client_emails( $mail,$subject, $message );
 
         return true;
+      }
+      public static function get_city_tab_row($city_id, $city_name) {
+        $su_free = 0;
+        $su_reserved = 0;
+        $su_occupied = 0;
+        $args = array(
+            'post_type'  => 'save_ukraine',
+            'tax_query' => array(
+                array(
+                    'taxonomy' => 'save_ukraine_type',
+                    'field'    => 'term_id',
+                    'terms'    => array($city_id),
+                )
+            )
+
+        );
+        $postslist = get_posts( $args );
+        foreach ($postslist as $city_data) {
+          $status_book = get_post_meta($city_data->ID, 'su_status', true );
+          $count_free_spot = get_post_meta($city_data->ID, 'count_free_spot', true);
+          if($status_book == 'free' || empty($status_book)){
+            $su_free+= $count_free_spot;
+          }else if ($status_book == 'occupied') {
+            $su_occupied+= $count_free_spot;
+          } else if ($status_book == 'reserved'){
+            $su_reserved+= $count_free_spot;
+          }
+        }
+        $html = '<tr>';
+          $html .= '<td>'.$city_name.'</td>';
+          $html .= '<td style="text-align:center">'.$su_free.' ('.$su_reserved.')</td>';
+          $html .= '<td style="text-align:center">'.$su_occupied.'</td>';
+        $html .= '</tr>';
+        return $html;
       }
 
      

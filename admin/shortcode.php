@@ -42,9 +42,10 @@ if( ! class_exists( 'shortcode' ) )
         } 
 
         public function save_field_from_short_code(){
+            if ( !isset($_POST['form_send_action']) || ! wp_verify_nonce( $_POST['form_send_action'], 'wedesin_form_send')) return;
             
             if(isset($_POST['save_su_shortcode']) && $_POST['save_su_shortcode'] == 1){
-                
+                //die();
                 global $user_ID;
                 $new_post = array(
                 'post_title' => $_POST['su_name'] .' '. $_POST['su_subname'],

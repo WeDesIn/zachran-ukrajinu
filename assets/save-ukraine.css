@@ -47,3 +47,16 @@
 .divTableBody {
 	display: table-row-group;
 }
+
+#shortcode_form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 10px;
+
+}
+.wedesin_save_form fieldset {
+  margin-bottom: 10px;
+}
+.wedesin_save_form.wedesin-fullwidth {
+  grid-column: 1/3;
+}

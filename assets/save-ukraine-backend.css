@@ -1,0 +1,28 @@
+.wedesin_meta_box_form {
+  margin-bottom: 20px;
+}
+.wedesin_meta_box_form.wedesin-form-status label{
+  font-size: 1.25rem;
+  width: auto;
+  min-width: 0;
+}
+.wedesin_meta_box_form.wedesin-form-status label.label-mini {
+  font-size: 1rem;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-left: 50px;
+}
+.wedesin_meta_box_form.wedesin-form-status input{
+  margin: 0 5px 0 20px;
+}
+.wedesin_meta_box_form input, .wedesin_meta_box_form select {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.wedesin_meta_box_form label{
+  min-width: 130px;
+  display: inline-block;
+}
+.wedesin_meta_box_form textarea {
+  margin-top: 10px;
+}

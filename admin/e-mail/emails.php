@@ -33,11 +33,11 @@ if( ! class_exists( 'SuSendEmail' ) )
           $this->mailreply = $replymail;
         }
         public function settings_css($settings = []) {
-          $this->background = (isset($settings['footer_bg_color']) ? $settings['footer_bg_color'] : '#FFFFFF' );
+          $this->background = (isset($settings['footer_bg_color']) ? $settings['footer_bg_color'] : '#005abb' );
           $this->fontColorText = '#151B24';
           $this->fontColorLink = '#03acff';
-          $this->fontColorFooter = (isset($settings['footer_color']) ? $settings['footer_color'] : '#000000');
-          $this->fontColorLinkText = (isset($settings['Links_color']) ? $settings['Links_color'] : '#2199e8');
+          $this->fontColorFooter = (isset($settings['footer_color']) ? $settings['footer_color'] : '#ffffff');
+          $this->fontColorLinkText = (isset($settings['Links_color']) ? $settings['Links_color'] : '#ffd500');
           $this->fontSize = '12px';
           $this->lineHeight = '16px';
           $this->fontFamily = 'Arial, sans-serif';
@@ -94,7 +94,7 @@ if( ! class_exists( 'SuSendEmail' ) )
           $body="",
           $footer=""
           ){
-            $img_default = D1G1_SUURL . 'assets/img/d1g1-logo-cz.png';
+            $img_default = D1G1_SUURL . 'assets/img/logo4.png';
            // $img = (d1g1_get_option('emails_settings','header_logo') ? d1g1_get_option('emails_settings','header_logo') : $img_default);
 
             $return ='<!DOCTYPE html>
@@ -118,7 +118,7 @@ if( ! class_exists( 'SuSendEmail' ) )
                                             <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                 <tr>
                                                     <td bgcolor="" width="600" align="center">
-                                                      <a href="'.home_url().'"><img src="'.$img .'" width="300" height="auto" style="width: 300px; height:auto;"></a>
+                                                      <a href="'.home_url().'"><img src="'.$img_default .'" width="300" height="auto" style="width: 300px; height:auto;"></a>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -138,18 +138,18 @@ if( ! class_exists( 'SuSendEmail' ) )
                                     <div style="padding: 10px;">
                                         <table  width="100%" border="0" cellspacing="0" cellpadding="0">';
                                             if (!empty($title) ) {
-                                              $return .= '<tr><td align="left" style="font-size: 40px; line-height: 48px; font-family: Georgia, Arial, sans-serif; color: '.$this->fontColorText.'; padding:20px 5%" class="padding-copy">' .$title. '</td></tr>';
+                                              $return .= '<tr><td align="center" style="font-size: 40px; line-height: 48px; font-family: Georgia, Arial, sans-serif; color: '.$this->fontColorText.'; padding:20px 5%" class="padding-copy">' .$title. '</td></tr>';
                                             }
 
                                           if ( $body ) { 
                                             foreach ($body as $paragraph) {
 
-                                              $return .= '<tr><td align="left" style="'.$this->default_font_style().' padding: 0 5% 20px 5%;" class="padding-copy">' .$paragraph. '</td></tr>';
+                                              $return .= '<tr><td align="center" style="'.$this->default_font_style().' padding: 0 5% 20px 5%;" class="padding-copy">' .$paragraph. '</td></tr>';
 
                                             }
                                           }
                                             $return .= '<tr>
-                                                <td align="left" style="padding: 15px 5% 20px 5%; font-size: 12px; line-height: 25px; font-family: '.$this->fontFamily.'; color: '.$this->fontColorText.';" class="padding-copy">'.$footer.'                                            
+                                                <td align="center" style="padding: 15px 5% 20px 5%; font-size: 12px; line-height: 25px; font-family: '.$this->fontFamily.'; color: '.$this->fontColorText.';" class="padding-copy">'.$footer.'                                            
                                                 </td>
                                             </tr>                                      
                                         </table>
@@ -172,9 +172,7 @@ if( ! class_exists( 'SuSendEmail' ) )
 
         }
         public function render_mail_footer() {
-        
           $text = $this->text_settings();
-
           $return = '<table border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td align="center">
