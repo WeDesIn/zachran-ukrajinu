@@ -222,7 +222,7 @@ if( ! class_exists( 'HtmlForm' ) )
                                 </select>
                                 <br>
                                 <input type="radio" id="su_thanksyou" name="su_thanksyou" value="text"  <?= ($su_thanksyou == 'text' ? 'checked' :' ')?>>
-                                <label for="su_thanksyou"><?= __('Zobrazit zprávu',TM_PLUGSU); ?> </label><br>
+                                <label for="su_thanksyou"><?= __('Zobrazit zprávu',TM_PLUGSU); ?> </label><br>
                                 <label class="label-mini" for="su_thanksyou_text"><?= __('Vyplňte obsah děkovací stránky',TM_PLUGSU); ?> </label>
                                 <input type="text" id="su_thanksyou_text" name="su_thanksyou_text" value="<?=(isset($su_thanksyou_text) && $su_thanksyou_text  ? $su_thanksyou_text :'')?>">
                                 
@@ -242,21 +242,18 @@ if( ! class_exists( 'HtmlForm' ) )
             ob_start();
             ?>
                 <table>
-                <tr>
-                    <th><?= __('Město',TM_PLUGSU)?></th>
-                    <th style="text-align:center"><?= __('počet volných míst (rezervované)',TM_PLUGSU)?></th>
-                    <th style="text-align:center"><?= __('počet obsazených míst',TM_PLUGSU)?></th>
-                </tr>
-                
+                    <tr>
+                        <th><?= __('Město',TM_PLUGSU)?></th>
+                        <th style="text-align:center"><?= __('počet volných míst (rezervované)',TM_PLUGSU)?></th>
+                        <th style="text-align:center"><?= __('počet obsazených míst',TM_PLUGSU)?></th>
+                    </tr>
+                    
                   <?php
                     foreach ($su_cities as $city_id => $city_name) {
                         echo SuProcessing::get_city_tab_row($city_id, $city_name);
                     }
 
                     ?>
-
-
-                </tr>
                 
                 </table>
             <?php 

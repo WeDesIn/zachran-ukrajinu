@@ -37,7 +37,7 @@ if( ! class_exists( 'shortcode' ) )
                 }
             }
           
-        return $this->HtmlForm->shortcode_form();
+            return $this->HtmlForm->shortcode_form();
        
         } 
 
@@ -46,19 +46,20 @@ if( ! class_exists( 'shortcode' ) )
             
             if(isset($_POST['save_su_shortcode']) && $_POST['save_su_shortcode'] == 1){
                 //die();
+                $filter = filter_input_array(INPUT_POST);
                 global $user_ID;
                 $new_post = array(
-                'post_title' => $_POST['su_name'] .' '. $_POST['su_subname'],
+                'post_title' => $filter['su_name'] .' '. $filter['su_subname'],
                 'post_status' => 'publish',
                 'post_date' => date('Y-m-d H:i:s'),
                 'post_author' => $user_ID,
                 'post_type' => 'save_ukraine',
                 'tax_input' => [
-                    'save_ukraine_type' => [$_POST['su_city']]
+                    'save_ukraine_type' => [$filter['su_city']]
                 ]
                 );
                 $post_id = wp_insert_post($new_post);
-                $data_of_post = SuProcessing::process_data_for_save($_POST);
+                $data_of_post = SuProcessing::process_data_for_save($filter);
                 $SuProcessing = new SuProcessing;
                 $check =  $SuProcessing->check_field_reqired($data_of_post);
                 if($check == false){
@@ -67,6 +68,7 @@ if( ! class_exists( 'shortcode' ) )
                     return false;
                 }
                 $save = SuProcessing::save_su_fields_meta_foreach($post_id,$data_of_post);
+                update_post_meta($post_id, 'su_status', 'free');
                 if($save == true){    
                     $this->sessions->addSession('save_su_shortcode_success','success');
                     $this->sessions->addSession('save_su_shortcode_mess',['ok']);
