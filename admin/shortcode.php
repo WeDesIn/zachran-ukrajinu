@@ -86,10 +86,12 @@ if( ! class_exists( 'shortcode' ) )
                 }
                 $save = SuProcessing::save_su_fields_meta_foreach($post_id,$data_of_post);
                 update_post_meta($post_id, 'su_status', 'free');
+                $mail = get_post_meta($post_id,'su_mail', true);
                 if($save == true){    
                     $this->sessions->addSession('save_su_shortcode_success','success');
                     $this->sessions->addSession('save_su_shortcode_mess',['ok']);
-                    SuProcessing::send_mail();
+                    SuProcessing::send_mail($mail);
+                    SuProcessing::send_admin_mail($post_id);
                    
                     return true;
                 }else{

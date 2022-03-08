@@ -302,7 +302,7 @@ if( ! class_exists( 'SuSendEmail' ) )
 
         public  function send_admin_email( $subject, $message ) {
             $headers = array( 'Content-Type: text/html; charset=UTF-8 ' );
-            $to = get_field( 'admin_email', 'options');
+            $to = (get_option('su_admin_mail') ? get_option('su_admin_mail')  : get_bloginfo('admin_email'));
             //submit admin email
             if ( $to && $subject && $message ) {
               wp_mail( $to, $subject, $message, $headers );

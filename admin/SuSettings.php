@@ -51,6 +51,11 @@ if( ! class_exists( 'SuSetting' ) )
                 }else {
                     delete_option('su_thanksyou_text');
                 }
+                if(isset($_POST['su_selected_tax']) && $_POST['su_selected_tax']){
+                    update_option('su_selected_tax',$_POST['su_selected_tax']); 
+                }else {
+                    delete_option('su_selected_tax');
+                }
             }
             if(isset($_POST['save_su_settings_thanksyou']) && $_POST['save_su_settings_thanksyou'] == 'text'){
                 if(isset($_POST['su_admin_mail']) && $_POST['su_admin_mail']){

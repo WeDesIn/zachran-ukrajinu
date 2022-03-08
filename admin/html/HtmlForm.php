@@ -113,7 +113,7 @@ if( ! class_exists( 'HtmlForm' ) )
                     </fieldset>
                     <fieldset class="wedesin_save_form wedesin-half">        
                         <label for="su_phone"><?= __('Telefon',TM_PLUGSU); ?></label>
-                        <input type="tel" id="su_phone" name="su_phone" required placeholder="777 777 777">
+                        <input type="tel" id="su_phone" name="su_phone">
                     </fieldset>
                     <fieldset class="wedesin_save_form wedesin-fullwidth">          
                         <label for="su_adress"><?= __('Ubytovací adresa',TM_PLUGSU); ?>*</label>
@@ -123,8 +123,9 @@ if( ! class_exists( 'HtmlForm' ) )
                         <label for="su_city"><?= __('Město',TM_PLUGSU); ?>*</label>
                         <select name="su_city" id="mesto" >
                             <?php
+                            $selected_tax = get_option('su_selected_tax');
                             foreach (SuProcessing::get_all_save_ukraine_terms() as $key => $value) { 
-                            echo '<option value='.$key.'>'.$value.'</option>';
+                            echo '<option value="'.$key.'" '.($key == $selected_tax ? 'selected':'').'>'.$value.'</option>';
                             }
                             ?>
                         </select>
@@ -142,16 +143,17 @@ if( ! class_exists( 'HtmlForm' ) )
                     </fieldset>
                     <fieldset class="wedesin_save_form wedesin-half">        
                         <label for="su_speak"><?= __('Hovoří těmito jazyky:',TM_PLUGSU); ?></label>
-                        <input type="text" id="su_speak" name="su_speak" required>
+                        <input type="text" id="su_speak" name="su_speak">
                     </fieldset>            
                     <fieldset class="wedesin_save_form wedesin-half">        
-                        <label for="su_accommodation_length"><?= __('Delka ubytování:',TM_PLUGSU); ?>*</label>
-                        <input type="text" id="su_accommodation_length" name="su_accommodation_length" required>
+                        <label for="su_accommodation_length"><?= __('Delka ubytování:',TM_PLUGSU); ?></label>
+                        <input type="text" id="su_accommodation_length" name="su_accommodation_length">
                     </fieldset> 
                     <fieldset class="wedesin_save_form wedesin-fullwidth">       
                     <label for="su_comment"><?= __('Poznámka:',TM_PLUGSU); ?></label>
                         <textarea id="w3review" id="su_comment" name="su_comment" rows="4" cols="50"></textarea>
                     </fieldset>
+                    <p><?= __('Odesláním formuláře souhlasíte se <a href="/ochrana-osobnich-udaju/" target="_blank">zpracováním osobních údajů</a>',TM_PLUGSU) ?></p>
                     <fieldset class="wedesin_save_form wedesin-fullwidth">       
                         <input type="submit" value="Odeslat">
                     </fieldset>
@@ -168,9 +170,6 @@ if( ! class_exists( 'HtmlForm' ) )
         * 	@return html
         */
         static public function settings_page_html(){
-           $su_thanksyou = get_option('su_thanksyou');
-           $su_thanksyou_page = get_option('su_thanksyou_page');
-           $su_thanksyou_text = get_option('su_thanksyou_text');
            $default_tab = null;
            $tab = isset($_GET['tab']) ? $_GET['tab'] : $default_tab;
   
@@ -228,6 +227,10 @@ if( ! class_exists( 'HtmlForm' ) )
                         <?php
                         break;
                     default:
+                        $su_thanksyou = get_option('su_thanksyou');
+                        $su_thanksyou_page = get_option('su_thanksyou_page');
+                        $su_thanksyou_text = get_option('su_thanksyou_text');
+                        $su_selected_tax = get_option('su_selected_tax');
                         ?>
                         <h2><?= __( 'Nastavení odesílání formuláře', TM_PLUGSU ); ?></h2>
                         <form action="edit.php?post_type=save_ukraine&page=Setting_save_ukraine" method="post" id="settings_form_text">
@@ -237,12 +240,12 @@ if( ! class_exists( 'HtmlForm' ) )
                                 <p><?= __( 'Vyberte, co bude následovat po odeslání formuláře', TM_PLUGSU ); ?></p>
 
                                 <input type="radio" id="su_thanksyou" name="su_thanksyou" value="page" <?= ($su_thanksyou == 'page' ? 'checked' :' ')?>>
-                                <label for="su_thanksyou"><?= __('Přesměrovat na domácí stránku',TM_PLUGSU); ?></label><br>
+                                <label for="su_thanksyou"><?= __('Přesměrovat na děkovací stránku',TM_PLUGSU); ?></label><br>
                                 <label class="label-mini" for="su_thanksyou"><?= __('Vyberte děkovací stránku',TM_PLUGSU); ?></label>
                                 <select name="su_thanksyou_page" id="su_thanksyou_page" >
                                     <?php
                                     foreach (SuProcessing::gel_all_pages_for_select() as $key => $value) { 
-                                    echo '<option value='.$key.''.(isset($su_thanksyou_page) && $su_thanksyou_page && $su_thanksyou_page == $key ? ' selected': '').'>'.$value.'</option>';
+                                    echo '<option value='.$key.''.( $su_thanksyou_page && $su_thanksyou_page == $key ? ' selected': '').'>'.$value.'</option>';
                                     }
                                     ?>
                                 </select>
@@ -250,8 +253,11 @@ if( ! class_exists( 'HtmlForm' ) )
                                 <input type="radio" id="su_thanksyou" name="su_thanksyou" value="text"  <?= ($su_thanksyou == 'text' ? 'checked' :' ')?>>
                                 <label for="su_thanksyou"><?= __('Zobrazit zprávu',TM_PLUGSU); ?> </label><br>
                                 <label class="label-mini" for="su_thanksyou_text"><?= __('Vyplňte obsah děkovací stránky',TM_PLUGSU); ?> </label>
-                                <input type="text" id="su_thanksyou_text" name="su_thanksyou_text" value="<?=(isset($su_thanksyou_text) && $su_thanksyou_text  ? $su_thanksyou_text :'')?>">
-                                
+                                <input type="text" id="su_thanksyou_text" name="su_thanksyou_text" value="<?= ($su_thanksyou_text  ? $su_thanksyou_text :'')?>">
+                            </fieldset>
+                            <fieldset class="wedesin_meta_box_form">
+                            <label class="label-mini" for="su_selected_tax"><?= __('ID předvyplněného města',TM_PLUGSU); ?> </label>
+                                <input type="number" id="su_selected_tax" name="su_selected_tax" value="<?=($su_selected_tax  ? $su_selected_tax :'')?>">
                             </fieldset>
                             <?php submit_button();?>
                         </form>

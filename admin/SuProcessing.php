@@ -127,21 +127,21 @@ if( ! class_exists( 'SuProcessing' ) )
         if(empty($data_of_post['su_adress'])){ 
           $error['su_adress'] = [''.__('Není vyplněná adresa',TM_PLUGSU).''];
         }
-        if(empty($data_of_post['su_phone'])){ 
+        /*if(empty($data_of_post['su_phone'])){ 
           $error['su_phone'] = [''.__('Není vyplněný Telefon',TM_PLUGSU).''];
-        }
+        }*/
         if(empty($data_of_post['count_free_spot'])){ 
           $error['count_free_spot'] = [''.__('Není vyplněn počet míst',TM_PLUGSU).''];
         }
         if(empty($data_of_post['su_city'])){ 
           $error['su_city'] = [''.__('Není vyplněno město',TM_PLUGSU).''];
         }
-        if(empty($data_of_post['su_speak'])){ 
+        /*if(empty($data_of_post['su_speak'])){ 
           $error['su_speak'] = [''.__('Není vyplněný kterým jazykem mluvíte',TM_PLUGSU).''];
         }
         if(empty($data_of_post['su_accommodation_length'])){ 
           $error['su_accommodation_length'] = [''.__('Není vyplněna doba pronájmu',TM_PLUGSU).''];
-        }
+        }*/
         if(isset($error) && $error){
           $this->sessions->addSession('save_su_shortcode_mess',$error);
             return false; 
@@ -220,16 +220,14 @@ if( ! class_exists( 'SuProcessing' ) )
           return $data_of_post;
       }
        /**
-         * odleslaní emailu klientovy
-         *
-         * @author digihood
-         * @return true
-         */ 
-     static public function send_mail( ) {
+       * odleslaní emailu klientovy
+       *
+       * @author digihood
+       * @return true
+       */ 
+     static public function send_mail($mail) {
         $class_email = new SuSendEmail();
-     
         $title = (get_option('su_title_mail') ?  get_option('su_title_mail')  : __('Nadpis', TM_PLUGSU));
-        $mail = (get_option('su_admin_mail') ? get_option('su_admin_mail')  : get_bloginfo('admin_email'));
         $footer = (get_option('su_footer_mail') ? get_option('su_footer_mail'): '');
         $content = (get_option('su_message_mail') ? get_option('su_message_mail'): ''); 
         $message =  $class_email->email_content( $title,[$content], $footer);
@@ -239,16 +237,12 @@ if( ! class_exists( 'SuProcessing' ) )
         return true;
       }
 
-      static public function send_admin_mail( ) {
+      static public function send_admin_mail( $post_id) {
         $class_email = new SuSendEmail();
-     
-        $title = (get_option('su_title_mail') ?  get_option('su_title_mail')  : __('Nadpis', TM_PLUGSU));
-        $mail = (get_option('su_admin_mail') ? get_option('su_admin_mail')  : get_bloginfo('admin_email'));
-        $footer = (get_option('su_footer_mail') ? get_option('su_footer_mail'): '');
-        $content = (get_option('su_message_mail') ? get_option('su_message_mail'): ''); 
-        $message =  $class_email->email_content( $title,[$content], $footer);
+        $message = '<p>Dobrý den,</p><p>Na webu přibylo nové ubytování.<br>
+        Pro jeho zobrazení klikněte na následující odkaz: <a href="'.get_edit_post_link($post_id).'" target="_blank">'.get_the_title($post_id).'</a></p>';
         $subject =   (get_option('su_subject_mail') ? get_option('su_subject_mail'): '');
-       $t =  $class_email->send_client_emails( $mail,$subject, $message );
+        $t =  $class_email->send_admin_email($subject, $message );
 
         return true;
       }
