@@ -22,7 +22,7 @@ if( ! class_exists( 'zonePostType' ) )
 			add_action( 'init', [$this,'create_type_tax'] );
             add_filter('use_block_editor_for_post_type', [$this,'disable_gutenberg'], 10, 2);
             add_action( 'add_meta_boxes', [$this,'add_fields_meta_box'] );
-            add_action( 'save_post', [$this,'save_your_fields_meta'] );
+            add_action( 'save_post', [$this,'save_fields_meta'] );
             add_action('admin_menu', [$this,'add_sub_menu_setting']);
 
             // přidání sloupců do stránky 

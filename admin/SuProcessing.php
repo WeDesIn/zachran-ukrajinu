@@ -280,6 +280,7 @@ if( ! class_exists( 'SuProcessing' ) )
           $status_book = get_post_meta($city_data->ID, 'su_status', true );
           $count_free_spot = get_post_meta($city_data->ID, 'count_free_spot', true);
           if($status_book == 'free' || empty($status_book)){
+         
             $su_free+= $count_free_spot;
           }else if ($status_book == 'occupied') {
             $su_occupied+= $count_free_spot;
