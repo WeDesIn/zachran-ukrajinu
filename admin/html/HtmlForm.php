@@ -12,8 +12,17 @@ if( ! class_exists( 'HtmlForm' ) )
 		{
 
         }
+        /**
+        * 	output metaboxu
+        *
+        * 	@param $post = data postu 
+        *	
+        * 
+        * 	@author Wedesin
+        * 	@return html
+        */
 
-        public function html_input_zoneposttype($post){
+        public function Html_output_metabox($post){
             $post_id = $post->ID;
             $free_dog =  SuProcessing::show_value_field($post_id,'su_free_dog');
 
@@ -73,6 +82,15 @@ if( ! class_exists( 'HtmlForm' ) )
           <?php
         }
 
+          /**
+        * 	shortcode formulař 
+        *
+        * 	@param $post = data postu 
+        *	
+        * 
+        * 	@author Wedesin
+        * 	@return html
+        */
         public function  shortcode_form(){
             $su_thanksyou_page = get_option('su_thanksyou_page');
             $su_thanksyou = get_option('su_thanksyou');
@@ -140,7 +158,15 @@ if( ! class_exists( 'HtmlForm' ) )
                 </form>
             <?php return ob_get_clean();
         }
-
+          /**
+        * 	output stranky nastavení 
+        *
+        * 	
+        *	
+        * 
+        * 	@author Wedesin
+        * 	@return html
+        */
         static public function settings_page_html(){
            $su_thanksyou = get_option('su_thanksyou');
            $su_thanksyou_page = get_option('su_thanksyou_page');
@@ -236,7 +262,12 @@ if( ! class_exists( 'HtmlForm' ) )
             </div>
             <?php
         }
-
+          /**
+        * 	shortcode list table 
+        *
+        * 	@author Wedesin
+        * 	@return html
+        */
         static function shortcode_list(){
             $su_cities = SuProcessing::get_all_save_ukraine_terms(true);
             ob_start();

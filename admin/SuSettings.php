@@ -1,6 +1,6 @@
 <?php 
 /**
- * Popis třídy
+ * nastavení pluginu
  *
  * 
  * @author Wedesin
@@ -21,12 +21,22 @@ if( ! class_exists( 'SuSetting' ) )
 		{
          add_action( 'admin_init',[$this,'save_setting_su_feilds'] );
         }
-
+         /**
+         * přidaní obsahu do  nastavení pluginu
+         * @author digihood
+         * @return function
+         */ 
+        
         public function settings_index(){
            
             HtmlForm::settings_page_html();
            
         }
+         /**
+         * uložení dat z nastavení pluginu
+         * @author digihood
+         * @return 
+         */ 
 
         public function save_setting_su_feilds(){
             if(isset($_POST['save_su_settings_thanksyou']) && $_POST['save_su_settings_thanksyou'] == 'send') {

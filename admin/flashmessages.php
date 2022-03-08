@@ -1,6 +1,6 @@
 <?php 
 /**
- * class description
+ * Flash upozornení
  *
  * 
  * @author digihood
@@ -27,6 +27,7 @@ if( ! class_exists( 'FlashMessages' ) )
         /**
          * přidat zprávu
          *
+         * @param $rype = typ hlášky
          * @param $message = obsah zprávy
          * @param $errormsq = zda je to chybová hláška
          * 
@@ -37,20 +38,29 @@ if( ! class_exists( 'FlashMessages' ) )
             
             switch ($type) {
                 case 'success':
-                   self::html_mess($type,$mess,$submess);
+                   self::html_output_show_su_mess($type,$mess,$submess);
                     break;
                 case 'error':
-                    self::html_mess($type,$mess,$submess);
+                    self::html_output_show_su_mess($type,$mess,$submess);
                     break;
                 case 'fail':
-                    self::html_mess($type,$mess,$submess);
+                    self::html_output_show_su_mess($type,$mess,$submess);
                     break;
             }
        
         }
 
-
-        private static function html_mess($type,$mess,$submess){
+        /**
+         * html_output_show_su_mess
+         *
+         * @param $rype = typ hlášky
+         * @param $message = obsah zprávy
+         * @param $errormsq = zda je to chybová hláška
+         * 
+         * @author digihood
+         * @return true/false
+         */ 
+        private static function html_output_show_su_mess($type,$mess,$submess){
             echo '<div class="messageBox '.$type.'">';
             echo '<p>'.$mess.'</p>';
             if(is_array($submess)) {

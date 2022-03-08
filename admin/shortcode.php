@@ -1,5 +1,10 @@
 <?php 
-
+/**
+ * shortcode
+ *
+ * 
+ * @author digihood
+ */ 
 if ( ! defined( 'ABSPATH' ) ) {
   exit;
 }
@@ -18,7 +23,14 @@ if( ! class_exists( 'shortcode' ) )
             $this->HtmlForm = new HtmlForm;
             $this->sessions = new su_session;
         }
-       
+        
+
+         /**
+         * přidat shortcode form 
+         * 
+         * @author digihood
+         * @return function
+         */ 
         public function su_shortcode_form() { 
             $su_thanksyou_text = get_option('su_thanksyou_text');
             $su_thanksyou = get_option('su_thanksyou');
@@ -40,7 +52,12 @@ if( ! class_exists( 'shortcode' ) )
             return $this->HtmlForm->shortcode_form();
        
         } 
-
+         /**
+         * uložení dat z shortcode_form 
+         * 
+         * @author digihood
+         * @return true/false
+         */ 
         public function save_field_from_short_code(){
             if ( !isset($_POST['form_send_action']) || ! wp_verify_nonce( $_POST['form_send_action'], 'wedesin_form_send')) return;
             
@@ -83,11 +100,15 @@ if( ! class_exists( 'shortcode' ) )
             }
 
         }
-
+         /**
+         * přidat shortcode table
+         * 
+         * @author digihood
+         * @return Function
+         */ 
         public function su_shortcode_free (){
-            $all_post = SuProcessing::get_all_save_ukraine_post();
-
-            return HtmlForm::shortcode_list($all_post);
+            
+            return HtmlForm::shortcode_list();
              
         }
 

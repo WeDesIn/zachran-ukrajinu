@@ -3,7 +3,12 @@
 if ( ! defined( 'ABSPATH' ) ) {
   exit;
 }
-
+/**
+ * přidaní custom post type 
+ *
+ * 
+ * @author digihood
+ */ 
 if( ! class_exists( 'zonePostType' ) )
 {
 	class zonePostType
@@ -15,10 +20,10 @@ if( ! class_exists( 'zonePostType' ) )
 			add_action( 'init', [$this, 'create_post_type'] );
 	
 			add_action( 'init', [$this,'create_type_tax'] );
-            add_filter('use_block_editor_for_post_type', [$this,'prefix_disable_gutenberg'], 10, 2);
-            add_action( 'add_meta_boxes', [$this,'add_your_fields_meta_box'] );
+            add_filter('use_block_editor_for_post_type', [$this,'disable_gutenberg'], 10, 2);
+            add_action( 'add_meta_boxes', [$this,'add_fields_meta_box'] );
             add_action( 'save_post', [$this,'save_your_fields_meta'] );
-            add_action('admin_menu', [$this,'add_tutorial_cpt_submenu_example']);
+            add_action('admin_menu', [$this,'add_sub_menu_setting']);
 
             // přidání sloupců do stránky 
             add_filter( 'manage_save_ukraine_posts_columns', [$this, 'set_custom_edit_save_ukraine_columns'] );
@@ -27,14 +32,26 @@ if( ! class_exists( 'zonePostType' ) )
           
             
 		}
-       
-        function prefix_disable_gutenberg($current_status, $post_type)
+         /**
+         * vytvoření řádku pro tabulku s posty
+         *
+         * @param $city_id = id taxnonomy mesta
+         * @param $city_name = jmeno taxnonomy mesta
+         * @author digihood
+         * @return string
+         */ 
+        function disable_gutenberg($current_status, $post_type)
         {
           
             if ($post_type === 'save_ukraine') return false;
             return $current_status;
         }
-       
+        /**
+         * create post type
+         *
+         * @author digihood
+         * 
+         */ 
         function create_post_type() {
             register_post_type( 'save_ukraine',
                 array(
@@ -62,7 +79,6 @@ if( ! class_exists( 'zonePostType' ) )
          * @param none
          * 
          * @author Wedesin
-         * @return true/false
          */ 
         function create_type_tax() {
             register_taxonomy(
@@ -82,39 +98,64 @@ if( ! class_exists( 'zonePostType' ) )
 			);
 
         }
-
-        function add_tutorial_cpt_submenu_example(){
+         /**
+         * přidáni submenu 
+         * @author digihood
+         * @return string
+         */ 
+        
+        function add_sub_menu_setting(){
 
             add_submenu_page(
-                            'edit.php?post_type=save_ukraine', //$parent_slug
-                            __('Nastavení',TM_PLUGSU),  //$page_title
-                            __('Nastavení',TM_PLUGSU),        //$menu_title
-                            'manage_options',           //$capability
-                            'Setting_save_ukraine',//$menu_slug
-                            [new SuSetting, 'settings_index']//$function
+                            'edit.php?post_type=save_ukraine', 
+                            __('Nastavení',TM_PLUGSU), 
+                            __('Nastavení',TM_PLUGSU),      
+                            'manage_options',         
+                            'Setting_save_ukraine',
+                            [new SuSetting, 'settings_index']
             );       
         }
 
-        function add_your_fields_meta_box() {
+         /**
+         * vytvoření řádku pro tabulku s posty
+         *
+         * @param $city_id = id taxnonomy mesta
+         * @param $city_name = jmeno taxnonomy mesta
+         * @author digihood
+         * @return string
+         */ 
+        function add_fields_meta_box() {
             add_meta_box(
-                'save_ukraine', // $id
-                'Pole', // $title
-                [$this,'show_your_fields_meta_box'], // $callback
-                'save_ukraine', // $screen
-                'normal', // $context
-                'high' // $priority
+                'save_ukraine', 
+                'Pole',
+                [$this,'show_fields_meta_box'], 
+                'save_ukraine', 
+                'normal', 
+                'high'
             );
         }
          
-      
-        function show_your_fields_meta_box() {
+         /**
+         * zobrazení fieldů v metaboxu
+         * 
+         * @author digihood
+         *
+         */ 
+        function show_fields_meta_box() {
             global $post;  
-                $this->HtmlForm->html_input_zoneposttype($post);
+                $this->HtmlForm->Html_output_metabox($post);
                 ?>
             <?php 
         }
-
-        public function save_your_fields_meta( $post_id ) {  
+         /**
+         * uložení dat z metaboxu 
+         *
+         * @param $post_id = id postu
+         * 
+         * @author digihood
+         * @return string/false
+         */ 
+        public function save_fields_meta( $post_id ) {  
            
             if ( isset($_POST['post_type']) && 'save_ukraine' === $_POST['post_type'] ) {
                 if ( !current_user_can( 'edit_page', $post_id ) ) {
@@ -127,7 +168,14 @@ if( ! class_exists( 'zonePostType' ) )
                 if($save == null) return false;
             }
         }
-
+         /**
+         * přídaní sloupcu 
+         *
+         * @param $columns = sloupce
+         * 
+         * @author digihood
+         * @return string/false
+         */ 
         function set_custom_edit_save_ukraine_columns($columns) {
             unset( $columns['author'] );
             $columns['status'] = __( 'Status ubytování', TM_PLUGSU );
@@ -135,7 +183,15 @@ if( ! class_exists( 'zonePostType' ) )
         
             return $columns;
         }
-
+         /**
+         * zobrtazení v sloupcích  
+         *
+         * @param $columns = sloupce
+         * @param $post_id = id postu
+         * 
+         * @author digihood
+         * @return echo
+         */ 
         function custom_save_ukraine_column( $column, $post_id ) {
             switch ( $column ) {
         

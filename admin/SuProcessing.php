@@ -1,6 +1,6 @@
 <?php 
 /**
- * Popis třídy
+ * processing celeho pluginu
  *
  * 
  * @author Wedesin
@@ -23,7 +23,15 @@ if( ! class_exists( 'SuProcessing' ) )
     }
     
 
-
+         /**
+         * ukladání dat z administrace prispevku
+         *
+         * @param $post_id = id přispevku
+         * @param $data_of_post = data z funkce process_data_for_save
+         * 
+         * @author digihood
+         * @return true/false/null
+         */ 
     static function save_su_fields_meta_foreach($post_id,$data_of_post){
      
         foreach ($data_of_post as $key => $value) {
@@ -53,7 +61,15 @@ if( ! class_exists( 'SuProcessing' ) )
         } 
         return null;
     }
-  
+        /**
+         * zpracovaní dat z post pro uložení
+         *
+         * @param $data = $_POST
+         * 
+         * 
+         * @author digihood
+         * @return array
+         */ 
     static function process_data_for_save($data){
         
         $data_of_post = [
@@ -72,7 +88,13 @@ if( ! class_exists( 'SuProcessing' ) )
         ];
         return $data_of_post;
     }
-
+          /**
+         * získaní všech terms postu
+         *
+         * @param $hide_empty = false
+         * @author digihood
+         * @return array
+         */ 
       static function get_all_save_ukraine_terms($hide_empty=false){
           $terms = get_terms([
               'taxonomy' => 'save_ukraine_type',
@@ -84,7 +106,13 @@ if( ! class_exists( 'SuProcessing' ) )
           }
           return $term;
       }
-
+         /**
+         * session error text
+         *
+         * @param $data_of_post = data z funkce process_data_for_save
+         * @author digihood
+         * @return true/false
+         */ 
         public function check_field_reqired($data_of_post){
         $error = [];
         if(empty($data_of_post['su_name'])){ 
@@ -122,6 +150,14 @@ if( ! class_exists( 'SuProcessing' ) )
         }
         
       }
+        /**
+         * show value field 
+         *
+         * @param $post_id = ID prispevku
+         * @param $key = key value
+         * @author digihood
+         * @return array/null
+         */ 
 
       static function show_value_field($post_id,$key){
         $field = get_post_meta( $post_id,  $key, true );
@@ -130,7 +166,12 @@ if( ! class_exists( 'SuProcessing' ) )
         }
         return null;
       }
-
+        /**
+         * ziskaní všech stránek 
+         *
+         * @author digihood
+         * @return array
+         */ 
       static function gel_all_pages_for_select(){
         $pages = get_pages();
         $pages_for_select = [];
@@ -138,11 +179,14 @@ if( ! class_exists( 'SuProcessing' ) )
          $pages_for_select[$value->post_name] = $value->post_title;
         
         }
-        
-        
         return $pages_for_select;
       }
-
+        /**
+         * získaní všech custom post type(save_ukraine_type)
+         *
+         * @author digihood
+         * @return array
+         */ 
       static function get_all_save_ukraine_post(){
         $data_of_post = [];
         $posts = get_posts([
@@ -175,7 +219,12 @@ if( ! class_exists( 'SuProcessing' ) )
           }
           return $data_of_post;
       }
-     
+       /**
+         * odleslaní emailu klientovy
+         *
+         * @author digihood
+         * @return true
+         */ 
      static public function send_mail( ) {
         $class_email = new SuSendEmail();
      
@@ -185,7 +234,7 @@ if( ! class_exists( 'SuProcessing' ) )
         $content = (get_option('su_message_mail') ? get_option('su_message_mail'): ''); 
         $message =  $class_email->email_content( $title,[$content], $footer);
         $subject =   (get_option('su_subject_mail') ? get_option('su_subject_mail'): '');
-       $t =  $class_email->send_client_emails( $mail,$subject, $message );
+        $t =  $class_email->send_client_emails( $mail,$subject, $message );
 
         return true;
       }
@@ -203,6 +252,14 @@ if( ! class_exists( 'SuProcessing' ) )
 
         return true;
       }
+        /**
+         * vytvoření řádku pro tabulku s posty
+         *
+         * @param $city_id = id taxnonomy mesta
+         * @param $city_name = jmeno taxnonomy mesta
+         * @author digihood
+         * @return string
+         */ 
       public static function get_city_tab_row($city_id, $city_name) {
         $su_free = 0;
         $su_reserved = 0;
