@@ -177,12 +177,28 @@ if( ! class_exists( 'HtmlForm' ) )
             <div class="wrap">
                 <h1><?= __( 'Nastavení', TM_PLUGSU ); ?></h1>
                 <nav class="nav-tab-wrapper">
+
                     <a href="edit.php?post_type=save_ukraine&page=Setting_save_ukraine" class="nav-tab <?php if($tab===null):?>nav-tab-active<?php endif; ?>"><?= __( 'Odesílání formuláře', TM_PLUGSU ); ?></a>
                     <a href="edit.php?post_type=save_ukraine&page=Setting_save_ukraine&tab=text_settings" class="nav-tab <?php if($tab==='text_settings'):?>nav-tab-active<?php endif; ?>"><?= __( 'Nastavení', TM_PLUGSU ); ?></a>
+                        <a href="edit.php?post_type=save_ukraine&page=Setting_save_ukraine&tab=shortcode" class="nav-tab <?php if($tab==='shortcode'):?>nav-tab-active<?php endif; ?>"><?= __( 'ShortCode', TM_PLUGSU ); ?></a>
                 </nav>
                 <div class="tab-content">
                 <?php 
                 switch($tab) :
+                    case 'shortcode':
+                        ?>
+                        <br>
+                        <fieldset class="wedesin_meta_box_form wedesin-form-status">
+                            <label for="su_thanksyou"><?= __( 'Shortcode pro zobrazení formulaře pro odeslaní nabídky', TM_PLUGSU ); ?></label><br>
+                            <label class="label-mini" for="su_thanksyou">[show_su_form]</label>
+                            <br>
+                            <label for="su_thanksyou"><?= __( 'Shortcode pro zobrazení tabulky s nabídkami', TM_PLUGSU ); ?></label><br>
+                            <label class="label-mini" for="su_thanksyou">[show_su_list_free]</label>
+                            <br>
+
+                            </fieldset>
+                        <?php
+                        break;
                     case 'text_settings':
                         ?>
                         <h2><?= __( 'Nastavení e-mailu', TM_PLUGSU ); ?></h2>
