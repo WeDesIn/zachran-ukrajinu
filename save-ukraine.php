@@ -3,7 +3,7 @@
 * Plugin Name: Zachran ukrajinu
 * Plugin URI: https://www.wedesin.cz/
 * Description: 
-* Version: 0.0.1
+* Version: 1.0.0
 * Author: wedesin
 * Author URI: https://www.wedesin.cz/
 **/

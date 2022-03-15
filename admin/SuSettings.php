@@ -90,5 +90,5 @@ if( ! class_exists( 'SuSetting' ) )
             }
           }
     }
-    // new SuSetting;
+ 
 }

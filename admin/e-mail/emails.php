@@ -95,7 +95,7 @@ if( ! class_exists( 'SuSendEmail' ) )
           $footer=""
           ){
             $img_default = D1G1_SUURL . 'assets/img/logo4.png';
-           // $img = (d1g1_get_option('emails_settings','header_logo') ? d1g1_get_option('emails_settings','header_logo') : $img_default);
+          
 
             $return ='<!DOCTYPE html>
                 <html lang="cs">

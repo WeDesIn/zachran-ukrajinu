@@ -126,22 +126,13 @@ if( ! class_exists( 'SuProcessing' ) )
         }
         if(empty($data_of_post['su_adress'])){ 
           $error['su_adress'] = [''.__('Není vyplněná adresa',TM_PLUGSU).''];
-        }
-        /*if(empty($data_of_post['su_phone'])){ 
-          $error['su_phone'] = [''.__('Není vyplněný Telefon',TM_PLUGSU).''];
-        }*/
+        }  
         if(empty($data_of_post['count_free_spot'])){ 
           $error['count_free_spot'] = [''.__('Není vyplněn počet míst',TM_PLUGSU).''];
         }
         if(empty($data_of_post['su_city'])){ 
           $error['su_city'] = [''.__('Není vyplněno město',TM_PLUGSU).''];
         }
-        /*if(empty($data_of_post['su_speak'])){ 
-          $error['su_speak'] = [''.__('Není vyplněný kterým jazykem mluvíte',TM_PLUGSU).''];
-        }
-        if(empty($data_of_post['su_accommodation_length'])){ 
-          $error['su_accommodation_length'] = [''.__('Není vyplněna doba pronájmu',TM_PLUGSU).''];
-        }*/
         if(isset($error) && $error){
           $this->sessions->addSession('save_su_shortcode_mess',$error);
             return false; 
@@ -193,7 +184,6 @@ if( ! class_exists( 'SuProcessing' ) )
             'post_type' => 'save_ukraine',
             'post_status' => 'publish',
             'numberposts' => -1
-            // 'order'    => 'ASC'
           ]); 
 
           foreach ($posts as  $value) {
@@ -242,6 +232,7 @@ if( ! class_exists( 'SuProcessing' ) )
        * @author digihood
        * @return true
        */ 
+
       static public function send_admin_mail( $post_id) {
         $class_email = new SuSendEmail();
         $message = '<p>Dobrý den,</p><p>Na webu přibylo nové ubytování.<br>
@@ -259,6 +250,7 @@ if( ! class_exists( 'SuProcessing' ) )
          * @author digihood
          * @return string
          */ 
+
       public static function get_city_tab_row($city_id, $city_name) {
         $su_free = 0;
         $su_reserved = 0;
@@ -299,5 +291,5 @@ if( ! class_exists( 'SuProcessing' ) )
 
     
     }
-    // new SuProcessing;
+    
 }
