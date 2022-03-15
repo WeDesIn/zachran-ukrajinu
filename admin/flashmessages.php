@@ -53,9 +53,9 @@ if( ! class_exists( 'FlashMessages' ) )
         /**
          * html_output_show_su_mess
          *
-         * @param $rype = typ hlášky
-         * @param $message = obsah zprávy
-         * @param $errormsq = zda je to chybová hláška
+         * @param $type = typ hlášky
+         * @param $mess = title
+         * @param $submess = sub mess
          * 
          * @author digihood
          * @return true/false

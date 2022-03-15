@@ -19,25 +19,3 @@ define( 'D1G1_SU', 'save-ukraine' );
 include_once( D1G1_SUPATH . 'includes.php'); 
 
 
-/**
- * Print result with pre tag
- *
- * @param $lang string
- * 
- * @author digihood
- * @return echo string
- */ 
-
-if ( !function_exists('preprint') ) {
-
-    function preprint( $print ) {
-
-        echo '<pre>';
-
-        echo print_r( $print );
-
-        echo '</pre>';
-
-    }
-
-}

@@ -62,7 +62,6 @@ if( ! class_exists( 'shortcode' ) )
             if ( !isset($_POST['form_send_action']) || ! wp_verify_nonce( $_POST['form_send_action'], 'wedesin_form_send')) return;
             
             if(isset($_POST['save_su_shortcode']) && $_POST['save_su_shortcode'] == 1){
-                //die();
                 $filter = filter_input_array(INPUT_POST);
                 global $user_ID;
                 $new_post = array(

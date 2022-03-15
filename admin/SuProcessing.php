@@ -236,7 +236,12 @@ if( ! class_exists( 'SuProcessing' ) )
 
         return true;
       }
-
+      /**
+       * odleslaní emailu adminovy
+       *
+       * @author digihood
+       * @return true
+       */ 
       static public function send_admin_mail( $post_id) {
         $class_email = new SuSendEmail();
         $message = '<p>Dobrý den,</p><p>Na webu přibylo nové ubytování.<br>
