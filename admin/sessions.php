@@ -14,14 +14,9 @@ if( ! class_exists( 'su_session' ) )
 {
 	class su_session
 	{
-        private $default_mess_succ;
-        private $default_mess_error;
 
 		public function __construct()
 		{
-           
-            $this->default_mess_succ = __("Nastavení bylo úspěšně aktualizováno", TM_PLUGSU);
-            $this->default_mess_error = __("Nastavení se nepodařilo uložit. Zkuste to, prosím, znovu.", TM_PLUGSU);
             if(!session_id()) session_start();
         }
 
@@ -51,33 +46,25 @@ if( ! class_exists( 'su_session' ) )
          */ 
         public function checkSession( $name, $value="" ) 
         {
-            if ( isset( $_SESSION[$name] ) ) 
-            {
+            if ( !isset( $_SESSION[$name] ) ) return false;
 
-                if ( $value !== "" ) 
-                {
+            if ( $value !== "" ) {
 
-                    if ( $_SESSION[$name] == $value ) 
-                    {
-                        return true;
-                    }                    
+                if ( $_SESSION[$name] == $value ) {
+                    return true;
+                }                    
+
+            } else {
+
+                if ( $_SESSION[$name] == 'error' || $_SESSION[$name] == 'success' || $_SESSION[$name] == 'fail') {
+
+                    return true;
 
                 } else {
-
-                    if ( $_SESSION[$name] == 'error' || $_SESSION[$name] == 'success' || $_SESSION[$name] == 'fail') 
-                    {
-
-                        return true;
-
-                    } else {
-                        
-                    }
-
+                    
                 }
 
             }
-
-            return false;
 
         }
 
@@ -119,26 +106,6 @@ if( ! class_exists( 'su_session' ) )
 
             return false;
         }
-
-        /**
-         * kontrola aktivace sessin
-         *
-         * @param $name = jméno session
-         * 
-         * @author digihood
-         * @return true/false
-         */ 
-        public function chceckallsesion() {
-
-            if (isset($_SESSION)){
-                
-                return $_SESSION;
-                }
-                echo 'neni sessions';
-                
-        }
-
-      
             
     }
  }

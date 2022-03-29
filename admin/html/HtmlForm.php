@@ -82,7 +82,7 @@ if( ! class_exists( 'HtmlForm' ) )
           <?php
         }
 
-          /**
+        /**
         * 	shortcode formulař 
         *
         * 	@param $post = data postu 
@@ -160,11 +160,9 @@ if( ! class_exists( 'HtmlForm' ) )
                 </form>
             <?php return ob_get_clean();
         }
-          /**
+        
+        /**
         * 	output stranky nastavení 
-        *
-        * 	
-        *	
         * 
         * 	@author Wedesin
         * 	@return html
@@ -261,7 +259,7 @@ if( ! class_exists( 'HtmlForm' ) )
                                 <select name="su_thanksyou_page" id="su_thanksyou_page" >
                                     <?php
                                     foreach (SuProcessing::gel_all_pages_for_select() as $key => $value) { 
-                                    echo '<option value='.$key.''.( $su_thanksyou_page && $su_thanksyou_page == $key ? ' selected': '').'>'.$value.'</option>';
+                                        echo '<option value='.$key.''.( $su_thanksyou_page && $su_thanksyou_page == $key ? ' selected': '').'>'.$value.'</option>';
                                     }
                                     ?>
                                 </select>

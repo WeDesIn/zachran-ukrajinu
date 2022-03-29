@@ -23,9 +23,8 @@ if( ! class_exists( 'shortcode' ) )
             $this->HtmlForm = new HtmlForm;
             $this->sessions = new su_session;
         }
-        
 
-         /**
+        /**
          * přidat shortcode form 
          * 
          * @author digihood
@@ -70,9 +69,10 @@ if( ! class_exists( 'shortcode' ) )
                 'post_date' => date('Y-m-d H:i:s'),
                 'post_author' => $user_ID,
                 'post_type' => 'save_ukraine',
-                'tax_input' => [
-                    'save_ukraine_type' => [$filter['su_city']]
-                ]
+                'tax_input' => 
+                    [
+                        'save_ukraine_type' => [$filter['su_city']]
+                    ]
                 );
                 $post_id = wp_insert_post($new_post);
                 $data_of_post = SuProcessing::process_data_for_save($filter);
@@ -80,7 +80,6 @@ if( ! class_exists( 'shortcode' ) )
                 $check =  $SuProcessing->check_field_reqired($data_of_post);
                 if($check == false){
                     $this->sessions->addSession('save_su_shortcode','fail');
-                 
                     return false;
                 }
                 $save = SuProcessing::save_su_fields_meta_foreach($post_id,$data_of_post);
@@ -91,7 +90,6 @@ if( ! class_exists( 'shortcode' ) )
                     $this->sessions->addSession('save_su_shortcode_mess',['ok']);
                     SuProcessing::send_mail($mail);
                     SuProcessing::send_admin_mail($post_id);
-                   
                     return true;
                 }else{
                     $this->sessions->addSession('save_su_shortcode','error');
@@ -101,6 +99,7 @@ if( ! class_exists( 'shortcode' ) )
             }
 
         }
+        
          /**
          * přidat shortcode table
          * 
@@ -112,8 +111,6 @@ if( ! class_exists( 'shortcode' ) )
             return HtmlForm::shortcode_list();
              
         }
-
-
 
     }
     new shortcode;

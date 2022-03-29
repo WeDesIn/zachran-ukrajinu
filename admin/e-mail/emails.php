@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Odesílání a tvorba těla emailů
+ *
+ * 
+ * @author digihood
+ */ 
 
 if ( ! defined( 'ABSPATH' ) ) {
 
@@ -59,7 +65,7 @@ if( ! class_exists( 'SuSendEmail' ) )
           return $text;
         }
 
-        public function url_without(){
+        private function url_without(){
           $http = substr(get_home_url(), 0, 5);
           if ($http == 'https'){
               return str_replace('https://','',''.get_home_url().'');
@@ -67,15 +73,18 @@ if( ! class_exists( 'SuSendEmail' ) )
               return str_replace('http://','',''.get_home_url().'');
           }
         }
+
+        /*
+        Change reply to email address
+        ==============================================================*/
         function change_headers($args) {
           
           if(isset($this->mailreply) &&  $this->mailreply) {
             $mailheader = 'Reply-To: ' . $this->mailreply;
           }else{
             $mailheader = 'Reply-To: ' . bloginfo('admin_email');
-            
-            
           } 
+
           $mailheader .= "MIME-Version: 1.0\r\n";
           $mailheader .= "Content-Type: text/html; charset=utf-8\r\n";
 
@@ -91,123 +100,115 @@ if( ! class_exists( 'SuSendEmail' ) )
 
         public function email_content(
           $title, 
-          $body="",
+          $body=[],
           $footer=""
-          ){
-            $img_default = D1G1_SUURL . 'assets/img/logo4.png';
+        ){
+          $img_default = D1G1_SUURL . 'assets/img/logo4.png';
           
-
-            $return ='<!DOCTYPE html>
-                <html lang="cs">
-                <head>
-                <title>'. $title .'</title>
-                <meta charset="utf-8">
-                <meta name="viewport" content="width=device-width">
-                <style type="text/css">'.
-                $this->mail_default_css().
-                '</style>
-                </head>
-                <body style="margin: 0; padding: 0; background: #f6f6f6;">
-                <table  border="0" cellpadding="0" cellspacing="0" width="100%">
-                    <tr>
-                        <td>
-                            <div align="center" style="padding: 15px 15px 0px 15px;">
-                                <table style="background: #ffffff;" border="0" cellpadding="0" cellspacing="0" width="600" class="wrapper">
-                                    <tr>
-                                        <td style="padding: 30px;" class="logo">
-                                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                                                <tr>
-                                                    <td bgcolor="" width="600" align="center">
-                                                      <a href="'.home_url().'"><img src="'.$img_default .'" width="300" height="auto" style="width: 300px; height:auto;"></a>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
+          $return ='<!DOCTYPE html>
+            <html lang="cs">
+            <head>
+            <title>'. $title .'</title>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+            <style type="text/css">'.
+            $this->mail_default_css().
+            '</style>
+            </head>
+            <body style="margin: 0; padding: 0; background: #f6f6f6;">
+            <table  border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tr>
+                <td>
+                  <div align="center" style="padding: 15px 15px 0px 15px;">
+                    <table style="background: #ffffff;" border="0" cellpadding="0" cellspacing="0" width="600" class="wrapper">
+                      <tr>
+                        <td style="padding: 30px;" class="logo">
+                          <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tr>
+                              <td bgcolor="" width="600" align="center">
+                                <a href="'.home_url().'"><img src="'.$img_default .'" width="300" height="auto" style="width: 300px; height:auto;"></a>
+                              </td>
+                            </tr>
+                          </table>
                         </td>
-                    </tr>
-                </table>
-                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                      </tr>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+            </table>
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tr>
+                <td align="center" class="section-padding">
+                  <table border="0" cellpadding="0" cellspacing="0" width="600" class="responsive-table">
                     <tr>
-                        <td align="center" class="section-padding">
-                            <table border="0" cellpadding="0" cellspacing="0" width="600" class="responsive-table">
-                                <tr>
-                                    <td bgcolor="#ffffff" style="padding: 10px ; font-size: '.$this->fontSize.'; line-height: '.$this->lineHeight.'; font-family:'.$this->fontFamily.'; color: '.$this->fontColorText.';">
-                                    <div style="padding: 10px;">
-                                        <table  width="100%" border="0" cellspacing="0" cellpadding="0">';
-                                            if (!empty($title) ) {
-                                              $return .= '<tr><td align="center" style="font-size: 40px; line-height: 48px; font-family: Georgia, Arial, sans-serif; color: '.$this->fontColorText.'; padding:20px 5%" class="padding-copy">' .$title. '</td></tr>';
-                                            }
-
-                                          if ( $body ) { 
-                                            foreach ($body as $paragraph) {
-
-                                              $return .= '<tr><td align="center" style="'.$this->default_font_style().' padding: 0 5% 20px 5%;" class="padding-copy">' .$paragraph. '</td></tr>';
-
-                                            }
-                                          }
-                                            $return .= '<tr>
-                                                <td align="center" style="padding: 15px 5% 20px 5%; font-size: 12px; line-height: 25px; font-family: '.$this->fontFamily.'; color: '.$this->fontColorText.';" class="padding-copy">'.$footer.'                                            
-                                                </td>
-                                            </tr>                                      
-                                        </table>
-                                    </div>
-                                                
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
+                      <td bgcolor="#ffffff" style="padding: 10px ; font-size: '.$this->fontSize.'; line-height: '.$this->lineHeight.'; font-family:'.$this->fontFamily.'; color: '.$this->fontColorText.';">
+                        <div style="padding: 10px;">
+                          <table  width="100%" border="0" cellspacing="0" cellpadding="0">';
+                            if (!empty($title) ) {
+                              $return .= '<tr><td align="center" style="font-size: 40px; line-height: 48px; font-family: Georgia, Arial, sans-serif; color: '.$this->fontColorText.'; padding:20px 5%" class="padding-copy">' .$title. '</td></tr>';
+                            }
+                            if ( $body ) { 
+                              foreach ($body as $paragraph) {
+                                $return .= '<tr><td align="center" style="'.$this->default_font_style().' padding: 0 5% 20px 5%;" class="padding-copy">' .$paragraph. '</td></tr>';
+                              }
+                            }
+                            $return .= '<tr>
+                              <td align="center" style="padding: 15px 5% 20px 5%; font-size: 12px; line-height: 25px; font-family: '.$this->fontFamily.'; color: '.$this->fontColorText.';" class="padding-copy">'.$footer.'                                            
+                              </td>
+                            </tr>                                      
+                          </table>
+                        </div>
+                      </td>
                     </tr>
-                </table>'
-                .$this->render_mail_footer().  '
-                </body>
-                </html>';
-
-               
-
-                return $return;
+                  </table>
+                </td>
+              </tr>
+            </table>'
+            .$this->render_mail_footer().  '
+            </body>
+            </html>';
+          return $return;
 
         }
-        public function render_mail_footer() {
+        /* Footer emails
+        ========================================================*/
+        private function render_mail_footer() {
           $text = $this->text_settings();
           $return = '<table border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td align="center">
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" id="footer-email">
-                      <tr>
-                          <td style="padding: 0px 0px 20px 0px;">
-                              <table style="background: '.$this->background.'; color:'.$this->fontColorFooter.';" width="600" border="0" cellspacing="0" cellpadding="0" align="center" class="responsive-table">';
-                                  $return .='<tr>
-                                      <td align="center" valign="middle" style="font-size: '.$this->fontSize .'; line-height: '. $this->lineHeight.'; font-family: '.$this->fontFamily.'; padding: 15px 5px 0px 5px;">
-                                      
-                                      </td>
-                                  </tr>
-                                  <tr>
-                                    <td align="center" valign="middle" style="font-size: '.$this->fontSize .'; line-height: '. $this->lineHeight.'; font-family: '.$this->fontFamily.'; padding: 0 5px;">
-                                      '.$text['footer_text'].'
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td align="center" valign="middle" style="font-size: '.$this->fontSize .'; line-height: '. $this->lineHeight.'; font-family: '.$this->fontFamily.'; padding: 15px 5px 15px 5px;">
-                                    '. $text['footer_copy'].'
-                                    </td>
-                                  </tr>
-                              </table>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" id="footer-email">
+                  <tr>
+                    <td style="padding: 0px 0px 20px 0px;">
+                      <table style="background: '.$this->background.'; color:'.$this->fontColorFooter.';" width="600" border="0" cellspacing="0" cellpadding="0" align="center" class="responsive-table">';
+                        $return .='<tr>
+                          <td align="center" valign="middle" style="font-size: '.$this->fontSize .'; line-height: '. $this->lineHeight.'; font-family: '.$this->fontFamily.'; padding: 15px 5px 0px 5px;">
                           </td>
-                      </tr>
-                  </table>
+                        </tr>
+                        <tr>
+                          <td align="center" valign="middle" style="font-size: '.$this->fontSize .'; line-height: '. $this->lineHeight.'; font-family: '.$this->fontFamily.'; padding: 0 5px;">
+                            '.$text['footer_text'].'
+                          </td>
+                        </tr>
+                        <tr>
+                          <td align="center" valign="middle" style="font-size: '.$this->fontSize .'; line-height: '. $this->lineHeight.'; font-family: '.$this->fontFamily.'; padding: 15px 5px 15px 5px;">
+                          '. $text['footer_copy'].'
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
           </table>';
           return $return;
-        
         }
 
         /* Add default styles to email 
         ========================================================*/
-        public function mail_default_css(){
+        private function mail_default_css(){
           $css = '#outlook a{padding:0;}
           .ReadMsgBody{width:100%;} .ExternalClass{width:100%;}
           .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;}
@@ -312,9 +313,7 @@ if( ! class_exists( 'SuSendEmail' ) )
         ========================================================*/
 
         public function send_client_emails( $mail, $subject, $message ){ 
-
           $headers = array( 'Content-Type: text/html; charset=UTF-8 ');
-
           if ( $mail && $subject && $message ) {
             wp_mail(  $mail, $subject, $message, $headers );
             return true;
@@ -323,7 +322,6 @@ if( ! class_exists( 'SuSendEmail' ) )
           return false;
         }
 
-      
       }
 
 }

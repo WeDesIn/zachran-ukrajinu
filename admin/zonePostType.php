@@ -18,20 +18,17 @@ if( ! class_exists( 'zonePostType' ) )
 		{
             $this->HtmlForm = new HtmlForm;
 			add_action( 'init', [$this, 'create_post_type'] );
-	
 			add_action( 'init', [$this,'create_type_tax'] );
             add_filter('use_block_editor_for_post_type', [$this,'disable_gutenberg'], 10, 2);
             add_action( 'add_meta_boxes', [$this,'add_fields_meta_box'] );
             add_action( 'save_post', [$this,'save_fields_meta'] );
             add_action('admin_menu', [$this,'add_sub_menu_setting']);
-
             // přidání sloupců do stránky 
             add_filter( 'manage_save_ukraine_posts_columns', [$this, 'set_custom_edit_save_ukraine_columns'] );
             add_action( 'manage_save_ukraine_posts_custom_column' , [$this,'custom_save_ukraine_column'], 10, 2 );
-		
-          
             
 		}
+
          /**
          * vytvoření řádku pro tabulku s posty
          *
@@ -42,10 +39,10 @@ if( ! class_exists( 'zonePostType' ) )
          */ 
         function disable_gutenberg($current_status, $post_type)
         {
-          
             if ($post_type === 'save_ukraine') return false;
             return $current_status;
         }
+
         /**
          * create post type
          *
@@ -96,27 +93,25 @@ if( ! class_exists( 'zonePostType' ) )
 					'show_in_rest' 				=> true,
 				)
 			);
-
         }
-         /**
+
+        /**
          * přidáni submenu 
          * @author digihood
          * @return string
          */ 
-        
         function add_sub_menu_setting(){
-
             add_submenu_page(
-                            'edit.php?post_type=save_ukraine', 
-                            __('Nastavení',TM_PLUGSU), 
-                            __('Nastavení',TM_PLUGSU),      
-                            'manage_options',         
-                            'Setting_save_ukraine',
-                            [new SuSetting, 'settings_index']
+                'edit.php?post_type=save_ukraine', 
+                __('Nastavení',TM_PLUGSU), 
+                __('Nastavení',TM_PLUGSU),      
+                'manage_options',         
+                'Setting_save_ukraine',
+                [new SuSetting, 'settings_index']
             );       
         }
 
-         /**
+        /**
          * vytvoření řádku pro tabulku s posty
          *
          * @param $city_id = id taxnonomy mesta
@@ -135,7 +130,7 @@ if( ! class_exists( 'zonePostType' ) )
             );
         }
          
-         /**
+        /**
          * zobrazení fieldů v metaboxu
          * 
          * @author digihood
@@ -143,11 +138,10 @@ if( ! class_exists( 'zonePostType' ) )
          */ 
         function show_fields_meta_box() {
             global $post;  
-                $this->HtmlForm->Html_output_metabox($post);
-                ?>
-            <?php 
+            $this->HtmlForm->Html_output_metabox($post);
         }
-         /**
+
+        /**
          * uložení dat z metaboxu 
          *
          * @param $post_id = id postu
@@ -156,7 +150,6 @@ if( ! class_exists( 'zonePostType' ) )
          * @return string/false
          */ 
         public function save_fields_meta( $post_id ) {  
-           
             if ( isset($_POST['post_type']) && 'save_ukraine' === $_POST['post_type'] ) {
                 if ( !current_user_can( 'edit_page', $post_id ) ) {
                     return $post_id;
@@ -168,7 +161,7 @@ if( ! class_exists( 'zonePostType' ) )
                 if($save == null) return false;
             }
         }
-         /**
+        /**
          * přídaní sloupcu 
          *
          * @param $columns = sloupce
@@ -180,10 +173,9 @@ if( ! class_exists( 'zonePostType' ) )
             unset( $columns['author'] );
             $columns['status'] = __( 'Status ubytování', TM_PLUGSU );
             $columns['kapacita'] = __( 'Kapacita', TM_PLUGSU );
-        
             return $columns;
         }
-         /**
+        /**
          * zobrtazení v sloupcích  
          *
          * @param $columns = sloupce
@@ -194,7 +186,6 @@ if( ! class_exists( 'zonePostType' ) )
          */ 
         function custom_save_ukraine_column( $column, $post_id ) {
             switch ( $column ) {
-        
                 case 'status' :
                     $status = get_post_meta($post_id, 'su_status', true);
                     if($status == 'free' || empty($status)){
@@ -205,14 +196,11 @@ if( ! class_exists( 'zonePostType' ) )
                         echo __( 'Obsazeno', TM_PLUGSU );
                     }
                     break;
-        
                 case 'kapacita' :
                     echo (get_post_meta($post_id, 'count_free_spot', true) ? get_post_meta($post_id, 'count_free_spot', true) : 0);
                     break;
-        
             }
-        }
-           
+        }  
     }
     new zonePostType;
 }

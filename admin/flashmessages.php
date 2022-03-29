@@ -14,8 +14,6 @@ if( ! class_exists( 'FlashMessages' ) )
 {
 	class FlashMessages
 	{
-     
-        private $session;
 		public function __construct()
 		{
            
