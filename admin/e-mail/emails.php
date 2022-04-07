@@ -104,7 +104,7 @@ if( ! class_exists( 'SuSendEmail' ) )
           $footer=""
         ){
           $setting_img = get_option('su_logo_mail');
-          $img_default = (isset($setting_img) && $setting_img ? $setting_img : D1G1_SUURL . 'assets/img/logo4.png');
+          $img_default = (isset($setting_img) && $setting_img ? $setting_img : '');
           
           $return ='<!DOCTYPE html>
             <html lang="cs">
