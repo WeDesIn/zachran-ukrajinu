@@ -60,8 +60,11 @@ if( ! class_exists( 'shortcode' ) )
         public function save_field_from_short_code(){
             if ( !isset($_POST['form_send_action']) || ! wp_verify_nonce( $_POST['form_send_action'], 'wedesin_form_send')) return;
             
+            
             if(isset($_POST['save_su_shortcode']) && $_POST['save_su_shortcode'] == 1){
                 $filter = filter_input_array(INPUT_POST);
+          
+               
                 global $user_ID;
                 $new_post = array(
                 'post_title' => $filter['su_name'] .' '. $filter['su_subname'],
@@ -78,10 +81,15 @@ if( ! class_exists( 'shortcode' ) )
                 $data_of_post = SuProcessing::process_data_for_save($filter);
                 $SuProcessing = new SuProcessing;
                 $check =  $SuProcessing->check_field_reqired($data_of_post);
+               
                 if($check == false){
                     $this->sessions->addSession('save_su_shortcode','fail');
-                    return false;
+                    $location = $_SERVER['HTTP_REFERER'];
+                    wp_safe_redirect($location);
+                    exit;
+              
                 }
+                
                 $save = SuProcessing::save_su_fields_meta_foreach($post_id,$data_of_post);
                 update_post_meta($post_id, 'su_status', 'free');
                 $mail = get_post_meta($post_id,'su_mail', true);

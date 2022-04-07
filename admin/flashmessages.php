@@ -63,6 +63,7 @@ if( ! class_exists( 'FlashMessages' ) )
             echo '<p>'.$mess.'</p>';
             if(is_array($submess)) {
                 foreach ($submess as $value) {
+                   
                     echo '<ul><li>'.$value[0].'</li></ul>';
                 }
             } else {

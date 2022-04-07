@@ -94,9 +94,10 @@ if( ! class_exists( 'HtmlForm' ) )
         public function  shortcode_form(){
             $su_thanksyou_page = get_option('su_thanksyou_page');
             $su_thanksyou = get_option('su_thanksyou');
+           
             ob_start();
              ?>
-                <form <?= ($su_thanksyou == 'page' ? 'action="/'.$su_thanksyou_page.'"' : '' )?> method="post" id="shortcode_form">
+                <form <?= ($su_thanksyou == 'page' ? 'action="/'.$su_thanksyou_page.'"' : '' )?> method="post" id="shortcode_form" novalidate>
                     <?php wp_nonce_field('wedesin_form_send', 'form_send_action') ?>
                     <input type="hidden" name="save_su_shortcode" value="1">
                     <fieldset class="wedesin_save_form wedesin-half">
@@ -109,7 +110,7 @@ if( ! class_exists( 'HtmlForm' ) )
                     </fieldset>
                     <fieldset class="wedesin_save_form wedesin-half">        
                         <label for="su_mail"><?= __('E-mail:',TM_PLUGSU); ?>*</label>
-                        <input type="email" id="su_mail" name="su_mail" required>
+                        <input type="email"  id="su_mail" name="su_mail" required>
                     </fieldset>
                     <fieldset class="wedesin_save_form wedesin-half">        
                         <label for="su_phone"><?= __('Telefon',TM_PLUGSU); ?></label>
@@ -208,6 +209,7 @@ if( ! class_exists( 'HtmlForm' ) )
                             $su_title_mail = get_option('su_title_mail');
                             $su_footer_mail = get_option('su_footer_mail');
                             $su_message_mail = get_option('su_message_mail');
+                            $su_logo_mail = get_option('su_logo_mail');
                             ?>
                         <fieldset class="wedesin_meta_box_form">
                             <label for="su_admin_mail"><?= __('E-mail Administratora',TM_PLUGSU); ?> </label>
@@ -220,6 +222,10 @@ if( ! class_exists( 'HtmlForm' ) )
                         <fieldset class="wedesin_meta_box_form">
                             <label for="su_title_mail"><?= __('Nadpis e-mailu',TM_PLUGSU); ?> </label>
                             <input type="text" id="su_title_mail" name="su_title_mail" value="<?=(isset($su_title_mail) && $su_title_mail  ? $su_title_mail :'')?>">
+                        </fieldset>
+                        <fieldset class="wedesin_meta_box_form">
+                            <label for="su_logo_mail"><?= __('Logo e-mailu',TM_PLUGSU); ?> </label>
+                            <input type="text" id="su_logo_mail" name="su_logo_mail" placeholder="Url Adresa obrazku" value="<?=(isset($su_logo_mail) && $su_logo_mail  ? $su_logo_mail :'')?>">
                         </fieldset>
                         <fieldset class="wedesin_meta_box_form">
                             <label for="su_footer_mail"><?= __('Text ve footeru e-mailu',TM_PLUGSU); ?> </label><br>

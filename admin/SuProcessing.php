@@ -123,6 +123,12 @@ if( ! class_exists( 'SuProcessing' ) )
       if(empty($data_of_post['su_mail'])){ 
         $error['su_mail'] = [''.__('Není vyplněný e-mail',TM_PLUGSU).''];
       }
+      if(!filter_var( $data_of_post["su_mail"],FILTER_VALIDATE_EMAIL)) {
+        $error['su_mail'] = [''.__('Email není ve správném formátu',TM_PLUGSU).''];
+      }
+      if (!preg_match("/^(\+420)? ?[1-9][0-9]{2} ?[0-9]{3} ?[0-9]{3}$/", $data_of_post['su_phone'])) {
+        $error['su_phone'] = [''.__('Telefon není ve správném formátu',TM_PLUGSU).''];
+      }
       if(empty($data_of_post['su_adress'])){ 
         $error['su_adress'] = [''.__('Není vyplněná adresa',TM_PLUGSU).''];
       }  

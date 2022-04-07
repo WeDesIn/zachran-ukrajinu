@@ -82,6 +82,10 @@ if( ! class_exists( 'SuSetting' ) )
                     update_option('su_message_mail',$_POST['su_message_mail']); 
                    
                 }
+                if(isset($_POST['su_logo_mail']) && $_POST['su_logo_mail']){
+                    update_option('su_logo_mail',$_POST['su_logo_mail']); 
+                   
+                }
             }
         }
     }

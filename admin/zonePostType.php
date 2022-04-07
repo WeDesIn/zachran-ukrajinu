@@ -155,7 +155,8 @@ if( ! class_exists( 'zonePostType' ) )
                     return $post_id;
                 } elseif ( !current_user_can( 'edit_post', $post_id ) ) {
                     return $post_id;
-                }  
+                }
+                
                 $data_of_post = SuProcessing::process_data_for_save($_POST);
                 $save = SuProcessing::save_su_fields_meta_foreach($post_id,$data_of_post);
                 if($save == null) return false;
